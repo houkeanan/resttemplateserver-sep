@@ -28,7 +28,7 @@ jobs:
 
       - name: Generate image tag
         id: meta
-        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command
+        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command {0}
         run: |
           Add-Content -Path $env:GITHUB_OUTPUT -Value "tag=${{ github.sha }}"
 
@@ -65,7 +65,7 @@ jobs:
 
       
       - name: Install kustomize
-        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command
+        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command {0}
         run: |
           $version = "v5.7.1"
 
@@ -80,7 +80,7 @@ jobs:
           .\kustomize.exe version    
 
       - name: Update image tag
-        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command
+        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command {0}
         run: |
           cd gitops/${{ env.GITOPS_PATH }}
 
@@ -88,7 +88,7 @@ jobs:
             ${{ env.IMAGE_NAME }}=${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.STUDENT_ID }}/${{ env.IMAGE_NAME }}:${{ needs.build-and-push.outputs.image_tag }}
 
       - name: Commit and push GitOps change
-        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command
+        shell: powershell -ExecutionPolicy Bypass -NoProfile -Command {0}
         run: |
           cd gitops
           git config user.name "github-actions[bot]"
